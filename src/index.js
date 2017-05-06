@@ -25,14 +25,8 @@ class Game extends Phaser.Game {
     this.currentLevel = 1;
   }
 
-
   reset() {
     this.state.start('MainView', Phaser.Plugin.StateTransition.In.ScaleUp, Phaser.Plugin.StateTransition.Out.SlideBottom, true, true, this.currentLevel);
-  }
-
-  nextLevel() {
-    this.currentLevel++;
-    this.state.start('MainView', Phaser.Plugin.StateTransition.In.SlideLeft, null, true, true, this.currentLevel);
   }
 }
 
