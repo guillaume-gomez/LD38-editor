@@ -119,7 +119,7 @@ class MainView extends Phaser.State {
 
     if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
       //maybe make an animation
-      this.game.nextLevel();
+      this.game.reset();
     }
   }
 
@@ -129,10 +129,6 @@ class MainView extends Phaser.State {
     if(this.hasLevel) {
       this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
     }
-  }
-
-  render() {
-    //this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
   }
 
   eraseBlockKeyboard() {
