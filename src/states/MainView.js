@@ -35,7 +35,6 @@ class MainView extends Phaser.State {
       this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
       this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
 
-
       this.map.createLayer('thirdLayer');
       this.map.createLayer('secondLayer');
       this.map.createLayer('firstLayer');
@@ -44,19 +43,20 @@ class MainView extends Phaser.State {
       this.map.setCollisionByExclusion([], true, this.collisionLayer);
 
       this.collisionLayer.resizeWorld();
-
-      this.hero = new Character(this.game, Levels[`Level${this.indexLevel}`].playerPosition.x , Levels[`Level${this.indexLevel}`].playerPosition.y, HeroSprite.key, 0);
+      const heroX = this.game.paramsLevel.playerPosition.x;
+      const heroY = this.game.paramsLevel.playerPosition.y;
+      this.hero = new Character(this.game, heroX, heroY, HeroSprite.key, 0);
       this.game.add.existing(this.hero);
       this.game.camera.follow(this.hero);
 
       this.marker = null;
       this.createTileSelector();
-      this.game.input.addMoveCallback(this.updateMarker, this);
+      //this.game.input.addMoveCallback(this.updateMarker, this);
 
-      this.mapManager = new MapManager(this.map, Levels[`Level${this.indexLevel}`].lastLayer);
+      this.mapManager = new MapManager(this.map, this.game.paramsLevel.lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.text = new InformationString(this.game, Width/2, Levels[`Level${this.indexLevel}`].text );
+      this.text = new InformationString(this.game, Width/2, this.game.paramsLevel.text );
       this.game.add.existing(this.text);
       this.text.blink();
 
@@ -84,8 +84,6 @@ class MainView extends Phaser.State {
       this.keyLeftLayer.onDown.add(this.moveLeft, this);
       this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
       this.keyRightLayer.onDown.add(this.moveRight, this);
-
-      this.game.time.advancedTiming = true;
     }
   }
 
