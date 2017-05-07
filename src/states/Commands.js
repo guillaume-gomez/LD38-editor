@@ -30,7 +30,7 @@ class Commands extends Phaser.State {
     this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: TextColor });
     this.game.add.text(500, 425, "Shift", { font: "bold 32px Arial", fill: TextColor });
 
-    this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: TextColor });
+    this.game.add.text(350, 525, "Press enter to quit", { font: "bold 34px Arial", fill: TextColor });
 
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.game.input.gamepad.start();

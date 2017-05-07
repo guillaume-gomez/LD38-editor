@@ -7,6 +7,8 @@ export const WidthSpriteSheetHero = 64;
 export const HeightSpriteSheetHero = 96;
 export const HeroRatio = 0.75;
 
+export const HelpButtonRatio = 0.75;
+
 export const TextPosition = 55;
 
 export const TextColor = "#8cc169";

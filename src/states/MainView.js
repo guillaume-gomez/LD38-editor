@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, HelpButtonRatio } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -59,6 +59,13 @@ class MainView extends Phaser.State {
       this.text = new InformationString(this.game, Width/2, Levels[`Level${this.indexLevel}`].text );
       this.game.add.existing(this.text);
       this.text.blink();
+
+      let group = this.game.add.group();
+      const button = this.game.make.button(950, 40, 'go_to_command_button', this.game.goToCommands, this.game, 2, 1, 0);
+      button.scale.setTo(HelpButtonRatio, HelpButtonRatio)
+      this.textInfo = this.game.add.text(965, 50, "?", { font: "bold 22px Arial", fill: "#FFFFFF", stroke: '#4D4D4D',strokeThickness: 1 });
+      group.add(button);
+
 
       this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
       this.hud.x = this.game.camera.x + HudTextX;
@@ -123,14 +130,6 @@ class MainView extends Phaser.State {
     }
   }
 
-  preload() {
-    this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
-    this.game.load.image(Tileset.key, `res/${Tileset.path}`);
-    if(this.hasLevel) {
-      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
-    }
-  }
-
   eraseBlockKeyboard() {
     this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
     this.hero.eraseBlocksAnimation(this.marker);
@@ -185,6 +184,15 @@ class MainView extends Phaser.State {
     this.marker.x += CursorSize;
     if(this.marker.x > Width - CursorSize) {
       this.marker.x = Width - CursorSize;
+    }
+  }
+
+  preload() {
+    this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
+    this.game.load.image(Tileset.key, `res/${Tileset.path}`);
+    this.game.load.spritesheet('go_to_command_button', "res/help_button.png", 64, 64);
+    if(this.hasLevel) {
+      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
     }
   }
 

@@ -9,7 +9,7 @@ class Game extends Phaser.Game {
     this.currentLevel = 1;
     this.state.add('MainView', MainView, false);
     this.state.add('Commands', Commands, false);
-    this.state.start('Commands');
+    this.state.start('MainView');
   }
 
   goToMainGame() {
