@@ -13,7 +13,7 @@ install node : ![node](https://nodejs.org/en/)
 `git clone https://github.com/guillaume-gomez/LD38-editor.git`
 
 ### Without a github account 
-Dowload the repository ![image]()
+Dowload the repository ![image](github-download.png)
 
 ### In the folder
 ```
