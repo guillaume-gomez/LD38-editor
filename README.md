@@ -7,8 +7,8 @@ Preview :
 ## Install
 
 ### Requirements
-- install node : [node](https://nodejs.org/en/)
-- tiled : [tiled](http://www.mapeditor.org/)
+- node : [install](https://nodejs.org/en/)
+- tiled : [install](http://www.mapeditor.org/)
 
 
 ### With a github account
