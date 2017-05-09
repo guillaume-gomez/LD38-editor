@@ -7,7 +7,9 @@ Preview :
 ## Install
 
 ### Requirements
-install node : ![node](https://nodejs.org/en/)
+- install node : [node](https://nodejs.org/en/)
+- tiled : [tiled](http://www.mapeditor.org/)
+
 
 ### With a github account
 `git clone https://github.com/guillaume-gomez/LD38-editor.git`
