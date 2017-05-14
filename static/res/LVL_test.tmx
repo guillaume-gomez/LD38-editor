@@ -12,6 +12,11 @@
     <property name="layer_index" value="2"/>
    </properties>
   </tile>
+  <tile id="256">
+   <properties>
+    <property name="layer_index" value="1"/>
+   </properties>
+  </tile>
   <tile id="329">
    <properties>
     <property name="layer_index" value="1"/>
@@ -21,7 +26,7 @@
   <tile id="352">
    <properties>
     <property name="is_gem" value="1"/>
-    <property name="layer_index" value="3"/>
+    <property name="layer_index" value="1"/>
    </properties>
   </tile>
   <tile id="367">
@@ -64,6 +69,11 @@
    <properties>
     <property name="layer_index" value="3"/>
     <property name="portal" value="1"/>
+   </properties>
+  </tile>
+  <tile id="480">
+   <properties>
+    <property name="layer_index" value="1"/>
    </properties>
   </tile>
   <tile id="495">
