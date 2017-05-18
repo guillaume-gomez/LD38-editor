@@ -29,6 +29,12 @@
     <property name="layer_index" value="1"/>
    </properties>
   </tile>
+  <tile id="353">
+   <properties>
+    <property name="is_gem" value="1"/>
+    <property name="layer_index" value="2"/>
+   </properties>
+  </tile>
   <tile id="367">
    <properties>
     <property name="layer_index" value="3"/>
