@@ -51,7 +51,7 @@ class MainView extends Phaser.State {
 
       this.marker = null;
       this.createTileSelector();
-      //this.game.input.addMoveCallback(this.updateMarker, this);
+      this.game.input.addMoveCallback(this.updateMarker, this);
 
       this.mapManager = new MapManager(this.map, this.game.paramsLevel.lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
