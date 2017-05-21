@@ -15,7 +15,7 @@ export const Level1 = {
   key: "Test",
   lastLayer: 1,
   text: "",
-  playerPosition: {x: 500, y: 20}
+  playerPosition: {x: 500, y: 80}
 };
 
 export const Levels = {
