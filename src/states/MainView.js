@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, HelpButtonRatio } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -35,6 +35,7 @@ class MainView extends Phaser.State {
       this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
       this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
 
+
       this.map.createLayer('thirdLayer');
       this.map.createLayer('secondLayer');
       this.map.createLayer('firstLayer');
@@ -43,9 +44,8 @@ class MainView extends Phaser.State {
       this.map.setCollisionByExclusion([], true, this.collisionLayer);
 
       this.collisionLayer.resizeWorld();
-      const heroX = this.game.paramsLevel.playerPosition.x;
-      const heroY = this.game.paramsLevel.playerPosition.y;
-      this.hero = new Character(this.game, heroX, heroY, HeroSprite.key, 0);
+
+      this.hero = new Character(this.game, Levels[`Level${this.indexLevel}`].playerPosition.x , Levels[`Level${this.indexLevel}`].playerPosition.y, HeroSprite.key, 0);
       this.game.add.existing(this.hero);
       this.game.camera.follow(this.hero);
 
@@ -53,19 +53,12 @@ class MainView extends Phaser.State {
       this.createTileSelector();
       this.game.input.addMoveCallback(this.updateMarker, this);
 
-      this.mapManager = new MapManager(this.map, this.game.paramsLevel.lastLayer);
+      this.mapManager = new MapManager(this.map, Levels[`Level${this.indexLevel}`].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.text = new InformationString(this.game, Width/2, this.game.paramsLevel.text );
+      this.text = new InformationString(this.game, Width/2, Levels[`Level${this.indexLevel}`].text );
       this.game.add.existing(this.text);
       this.text.blink();
-
-      let group = this.game.add.group();
-      const button = this.game.make.button(950, 40, 'go_to_command_button', this.game.goToCommands, this.game, 2, 1, 0);
-      button.scale.setTo(HelpButtonRatio, HelpButtonRatio)
-      this.textInfo = this.game.add.text(965, 50, "?", { font: "bold 22px Arial", fill: "#FFFFFF", stroke: '#4D4D4D',strokeThickness: 1 });
-      group.add(button);
-
 
       this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
       this.hud.x = this.game.camera.x + HudTextX;
@@ -84,6 +77,8 @@ class MainView extends Phaser.State {
       this.keyLeftLayer.onDown.add(this.moveLeft, this);
       this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
       this.keyRightLayer.onDown.add(this.moveRight, this);
+
+      this.game.time.advancedTiming = true;
     }
   }
 
@@ -116,6 +111,15 @@ class MainView extends Phaser.State {
       return;
     }
 
+    if(tile2.properties.layer_gem == 1) {
+      if(tile2.properties.layer_destroy) {
+        this.mapManager.removeLayer();
+      } else if (tile2.properties.layer_rollback) {
+        this.mapManager.undoLayer();
+      }
+      return;
+    }
+
     if(tile2.properties.is_gem == 1) {
       this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
       this.mapManager.killGem();
@@ -124,8 +128,20 @@ class MainView extends Phaser.State {
 
     if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
       //maybe make an animation
-      this.game.reset();
+      this.game.nextLevel();
     }
+  }
+
+  preload() {
+    this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
+    this.game.load.image(Tileset.key, `res/${Tileset.path}`);
+    if(this.hasLevel) {
+      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
+    }
+  }
+
+  render() {
+    //this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
   }
 
   eraseBlockKeyboard() {
@@ -182,15 +198,6 @@ class MainView extends Phaser.State {
     this.marker.x += CursorSize;
     if(this.marker.x > Width - CursorSize) {
       this.marker.x = Width - CursorSize;
-    }
-  }
-
-  preload() {
-    this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
-    this.game.load.image(Tileset.key, `res/${Tileset.path}`);
-    this.game.load.spritesheet('go_to_command_button', "res/help_button.png", 64, 64);
-    if(this.hasLevel) {
-      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
     }
   }
 
