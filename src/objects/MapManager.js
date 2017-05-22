@@ -1,4 +1,4 @@
-import { CursorLength } from '../Constants.js';
+import { CursorLength, Width, Height, Size, WidthLevel, HeightLevel } from '../Constants.js';
 
 const LengthAnimation = 50;
 const MaxLayer = 3;
@@ -14,6 +14,10 @@ class MapManager {
     this.currentGems = 0;
     this.doorSprites = [];
     this.visibleDoor = false;
+  }
+
+  shouldPicked(tile) {
+    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1;
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
@@ -41,17 +45,21 @@ class MapManager {
           this.cacheCollisionLayer.push(tile);
           this.map.removeTile(tile.x, tile.y, "colissionLayer");
          }
+
          if(tile.properties.layer_index) {
-            tile.alpha = 0;
+          tile.alpha = 0;
          }
 
-         if(tile.properties.is_gem == 1) {
-          this.nbGems++;
+        if(this.shouldPicked(tile)) {
           if(tile.properties.layer_index == MaxLayer) {
             tile.alpha = 1;
           } else {
             tile.alpha = 0;
           }
+        }
+
+        if(tile.properties.is_gem == 1) {
+          this.nbGems++;
         }
 
         if(tile.properties.portal == 1) {
@@ -62,9 +70,9 @@ class MapManager {
     });
   }
 
-  eraseBlock(x, y) {
-    const lengthY = CursorLength;
-    const lengthX = CursorLength;
+  eraseBlock(x, y, nbTiles = CursorLength) {
+    const lengthY = nbTiles;
+    const lengthX = nbTiles;
     //check the layers associated to the deletion;
     let objectsRemoves = [];
     let indexRemoval = 0;
@@ -73,7 +81,6 @@ class MapManager {
     if(layerIndex == -1) {
       return;
     }
-
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
         this.handleCollisionBlockOnErase(xAxis, yAxis, layerIndex);
@@ -93,12 +100,30 @@ class MapManager {
     this.removedBlock.sort(this.sortByLayerIndex);
   }
 
+  removeLayer() {
+    for(let x = 0; x < WidthLevel / Size; x++) {
+      for(let y = 0; y < HeightLevel / Size; y++) {
+        this.eraseBlock(x,y, 1);
+      }
+    }
+  }
+
+  undoLayer() {
+    for(let x = 0; x < WidthLevel / Size; x++) {
+      for(let y = 0; y < HeightLevel / Size; y++) {
+        this.undoBlock(x,y, 1);
+      }
+    }
+  }
+
   handleCollisionBlockOnErase(x,y, layerIndex) {
     let collidedTile = this.map.getTile(x, y, "colissionLayer");
     if(collidedTile && collidedTile.properties) {
       if(collidedTile.properties.layer_index >= layerIndex) {
-        this.cacheCollisionLayer.push(collidedTile);
-        this.map.removeTile(x, y, "colissionLayer")
+        if(!collidedTile.properties || !collidedTile.properties.portal) {
+          this.cacheCollisionLayer.push(collidedTile);
+          this.map.removeTile(x, y, "colissionLayer");
+        }
       }
     } else{
       //dont find the tile in the layer, so the tile might be in the deleted tiles
@@ -114,7 +139,7 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
-        if(!newTile.properties.is_gem) {
+        if(!this.shouldPicked(newTile)) {
           newTile.alpha = 0;
         }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
@@ -144,7 +169,7 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
-        if(!newTile.properties.is_gem) {
+        if(!this.shouldPicked(newTile)) {
           newTile.alpha = 0;
         }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
@@ -156,14 +181,20 @@ class MapManager {
     return a.layerIndex > b.layerIndex;
   }
 
-  undoBlock(x, y) {
-    const lengthX = CursorLength;
-    const lengthY = CursorLength;
-    const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
+  undoBlock(x, y, nbTiles = CursorLength) {
+    const lengthX = nbTiles;
+    const lengthY = nbTiles;
+    const redoElementsArray = this.removedBlock.filter(list => list.x === x && list.y === y );
+    const redoElements = redoElementsArray.reduce((acc, elm) => {
+      if(elm.layerIndex < acc.layerIndex) {
+        return elm;
+      }
+      return acc;
+    });
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
-        this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex)
+        this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex);
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
