@@ -1,3 +1,6 @@
 ## Data exported by level
 ### Level9 (json/tmx)
 `{"playerPosition":{"x":500,"y":80},"lastLayer":1,"text":""}`
+
+### Level 10(json/tmx)
+`{"playerPosition":{"x":64,"y":352},"lastLayer":1,"text":"I see a new block here!"}`
