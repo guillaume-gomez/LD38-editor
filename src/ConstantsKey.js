@@ -14,8 +14,8 @@ export const Level1 = {
   path: "MaxTrigger2.json",
   key: "Test",
   lastLayer: 1,
-  text: "Stay focused.",
-  playerPosition: {x: 64, y: 214}
+  text: "Knowledge is power",
+  playerPosition: {x: 24, y: 438}
 };
 
 export const Levels = {
