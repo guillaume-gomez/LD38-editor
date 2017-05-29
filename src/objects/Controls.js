@@ -1,10 +1,13 @@
 const Actions = ["left", "right", "jump", "moveLeftCursor", "moveRightCursor", "moveDownCursor", "moveUpCursor", "undoLayer", "removeLayer"];
 
 class Controls {
-  constructor(controlsSettings = {}, actionList = Actions) {
+  constructor(game, controlsSettings = {}, actionList = Actions) {
+    this.game = game;
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
-    this.isQwerty = false;
+    this.isQwerty = true;
+    this.game.input.gamepad.start();
+    this.pad = this.game.input.gamepad.pad1;
   };
 
   getKey(action) {
@@ -35,6 +38,15 @@ class Controls {
       "jump" : Phaser.Keyboard.Z,
       "undoLayer" : Phaser.Keyboard.SPACEBAR,
       "removeLayer" : Phaser.Keyboard.SHIFT
+    }
+  }
+
+  padConfig() {
+    return {
+      "jump" : Phaser.Gamepad.XBOX360_A,
+      "undoLayer" : Phaser.Gamepad.XBOX360_X,
+      "removeLayer" : Phaser.Gamepad.XBOX360_B,
+
     }
   }
 
@@ -91,6 +103,9 @@ class Controls {
   }
 
 
+  hasGamepad() {
+    return this.game.input.gamepad.supported && this.game.input.gamepad.active && this.game.input.gamepad.pad1.connected;
+  }
 
 }
 export default Controls;

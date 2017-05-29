@@ -16,7 +16,7 @@ class MainView extends Phaser.State {
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
     if(!this.game.controls) {
-      let controls = new Controls();
+      let controls = new Controls(this.game);
       controls.PostMortemDefaultConfig();
       this.game.controls = controls;
     }
@@ -76,6 +76,14 @@ class MainView extends Phaser.State {
       this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
       this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
+      if(this.game.controls.hasGamepad()) {
+        let buttonB = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_B);
+        buttonB.onDown.add(this.eraseBlockKeyboard, this);
+
+        let buttonX = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_X);
+        buttonB.onDown.add(this.undoBlockKeyboard, this);
+      }
+
       this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
       this.keyUpLayer.onDown.add(this.moveUp, this);
       this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
@@ -94,7 +102,9 @@ class MainView extends Phaser.State {
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
-
+    if(this.game.controls.hasGamepad()) {
+      this.commandsPad();
+    }
     this.updateGui();
   }
 
