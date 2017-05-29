@@ -5,7 +5,7 @@ class Controls {
     this.game = game;
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
-    this.isQwerty = true;
+    this.isQwerty = false;
     this.game.input.gamepad.start();
     this.pad = this.game.input.gamepad.pad1;
   };
