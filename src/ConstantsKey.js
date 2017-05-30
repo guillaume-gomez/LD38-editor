@@ -11,11 +11,11 @@ text: Text to explain the level
 playerPostion: original position of the player with the format {x: valueX, y: valueY}
 */
 export const Level1 = {
-  path: "MaxTrigger2.json",
+  path: "LVL_test.json",
   key: "Test",
-  lastLayer: 1,
-  text: "Knowledge is power",
-  playerPosition: {x: 24, y: 438}
+  lastLayer: 3,
+  text: "",
+  playerPosition: {x: 64, y: 352}
 };
 
 export const Levels = {
