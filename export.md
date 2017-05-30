@@ -7,3 +7,6 @@
 
 ### Level leap of death(json/tmx)
 `{"playerPosition":{"x":64,"y":280},"lastLayer":2,"text":""}`
+
+### Level MaximeTrigger2
+`{"playerPosition":{"x":24,"y":438},"lastLayer":1,"text":"Knowledge is power"}`
