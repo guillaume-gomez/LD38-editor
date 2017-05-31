@@ -10,3 +10,6 @@
 
 ### Level MaximeTrigger2
 `{"playerPosition":{"x":24,"y":438},"lastLayer":1,"text":"Knowledge is power"}`
+
+###Level MaximeTrigger1
+`{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Stay focused."}`
