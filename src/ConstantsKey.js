@@ -11,11 +11,11 @@ text: Text to explain the level
 playerPostion: original position of the player with the format {x: valueX, y: valueY}
 */
 export const Level1 = {
-  path: "bridge.json",
+  path: "LVL_test.json",
   key: "Test",
-  lastLayer: 1,
-  text: "Sometimes there's more than meet the eye",
-  playerPosition: {x: 64, y: 150}
+  lastLayer: 3,
+  text: "",
+  playerPosition: {x: 64, y: 352}
 };
 
 export const Levels = {
