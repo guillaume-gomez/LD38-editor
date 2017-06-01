@@ -13,3 +13,6 @@
 
 ###Level MaximeTrigger1
 `{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Stay focused."}`
+
+###Level Bridge
+`{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Sometimes there's more than meet the eye"}`
