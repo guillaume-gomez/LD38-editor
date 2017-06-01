@@ -2,6 +2,7 @@ import { CursorLength, Width, Height, Size, WidthLevel, HeightLevel } from '../C
 
 const LengthAnimation = 50;
 const MaxLayer = 3;
+const DefaultTiles = [{layer_index: 3, tile: 1152}, {layer_index: 2, tile: 1184}, {layer_index: 1, tile: 1216}]
 
 class MapManager {
 
@@ -17,7 +18,7 @@ class MapManager {
   }
 
   shouldPicked(tile) {
-    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1;
+    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1 || tile.properties.trigger === true;
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
@@ -31,7 +32,7 @@ class MapManager {
         break;
       }
     }
-    //impossibe
+    //impossible
     if(layerIndex <= 1 ||  layerIndex <= this.lastLayerAvailable) {
       return -1;
     }
@@ -70,9 +71,9 @@ class MapManager {
     });
   }
 
-  eraseBlock(x, y, nbTiles = CursorLength) {
-    const lengthY = nbTiles;
-    const lengthX = nbTiles;
+  eraseBlock(x, y, timerAnim = LengthAnimation) {
+    const lengthY = CursorLength;
+    const lengthX = CursorLength;
     //check the layers associated to the deletion;
     let objectsRemoves = [];
     let indexRemoval = 0;
@@ -89,7 +90,7 @@ class MapManager {
           const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
           objectsRemoves.push(tile);
         }
-        setTimeout(fn, indexRemoval * LengthAnimation);
+        setTimeout(fn, indexRemoval * timerAnim);
         indexRemoval++;
         if(indexRemoval > CursorLength) {
           indexRemoval = 0;
@@ -101,17 +102,17 @@ class MapManager {
   }
 
   removeLayer() {
-    for(let x = 0; x < WidthLevel / Size; x++) {
-      for(let y = 0; y < HeightLevel / Size; y++) {
-        this.eraseBlock(x,y, 1);
+    for(let x = 0; x < WidthLevel / Size; x += CursorLength) {
+      for(let y = 0; y < HeightLevel / Size; y += CursorLength) {
+        this.eraseBlock(x,y, 0);
       }
     }
   }
 
   undoLayer() {
-    for(let x = 0; x < WidthLevel / Size; x++) {
-      for(let y = 0; y < HeightLevel / Size; y++) {
-        this.undoBlock(x,y, 1);
+    for(let x = 0; x < WidthLevel / Size; x += CursorLength) {
+      for(let y = 0; y < HeightLevel / Size; y += CursorLength) {
+        this.undoBlock(x,y, 0);
       }
     }
   }
@@ -181,19 +182,27 @@ class MapManager {
     return a.layerIndex > b.layerIndex;
   }
 
-  undoBlock(x, y, nbTiles = CursorLength) {
-    const lengthX = nbTiles;
-    const lengthY = nbTiles;
+  undoBlock(x, y, timerAnim = LengthAnimation) {
+    const lengthX = CursorLength;
+    const lengthY = CursorLength;
     const redoElementsArray = this.removedBlock.filter(list => list.x === x && list.y === y );
+    // no matching
+    if(redoElementsArray.length === 0) {
+      return
+    }
     const redoElements = redoElementsArray.reduce((acc, elm) => {
       if(elm.layerIndex < acc.layerIndex) {
         return elm;
       }
       return acc;
     });
+    console.log(redoElements)
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
+        if(!tile) {
+          return;
+        }
         this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex);
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
@@ -202,7 +211,7 @@ class MapManager {
         const fn = () => {
           this.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
         };
-        setTimeout(fn, indexRemoval * LengthAnimation);
+        setTimeout(fn, indexRemoval * timerAnim);
         indexRemoval--;
         if(indexRemoval < 0) {
           indexRemoval = CursorLength;
@@ -213,6 +222,7 @@ class MapManager {
       this.removedBlock = newArray.sort(this.sortByLayerIndex);
     }
   }
+
 
   killGem() {
     this.currentGems++;
@@ -232,6 +242,20 @@ class MapManager {
     });
   }
 
+  removeCollisionsAndAddElements(layerIndex) {
+    let props = [];
+    this.map.forEach((tile) => {
+      if(tile.properties && tile.properties.layer_index == layerIndex && tile.properties.removed_block) {
+        props.push({x:tile.x, y: tile.y});
+      }
+    });
+    props.forEach(coord => {
+      this.map.removeTile(coord.x, coord.y, "colissionLayer");
+      //this.map.removeTile(coord.x, coord.y, layerIndex); CHECK IF CORRECT
+      const defaultTile = DefaultTiles.find(object => object.layer_index == layerIndex);
+      this.map.putTile(defaultTile.tile, coord.x, coord.y, layerIndex);
+    });
+  }
 }
 
 export default MapManager;
