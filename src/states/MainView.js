@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, HelpButtonRatio } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, WidthLevel, HelpButtonRatio } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -16,7 +16,7 @@ class MainView extends Phaser.State {
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
     if(!this.game.controls) {
-      let controls = new Controls();
+      let controls = new Controls(this.game);
       controls.PostMortemDefaultConfig();
       this.game.controls = controls;
     }
@@ -76,6 +76,14 @@ class MainView extends Phaser.State {
       this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
       this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
+      if(this.game.controls.hasGamepad()) {
+        let buttonB = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_B);
+        buttonB.onDown.add(this.eraseBlockKeyboard, this);
+
+        let buttonX = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_X);
+        buttonB.onDown.add(this.undoBlockKeyboard, this);
+      }
+
       this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
       this.keyUpLayer.onDown.add(this.moveUp, this);
       this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
@@ -89,11 +97,14 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
+    this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheckOverlap, null , this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheckCollide, this.hasPortal, this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
-
+    if(this.game.controls.hasGamepad()) {
+      this.commandsPad();
+    }
     this.updateGui();
   }
 
@@ -111,20 +122,38 @@ class MainView extends Phaser.State {
     return true;
   }
 
-  additionalCheck(tile1, tile2) {
+  additionalCheckCollide(tile1, tile2) {
+    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
+      //maybe make an animation
+      this.game.reset();
+    }
+  }
+
+  additionalCheckOverlap(tile1, tile2) {
     if(!tile2.properties) {
       return;
     }
 
+    if(tile2.properties.layer_gem == 1) {
+      if(tile2.properties.layer_destroy) {
+        this.mapManager.removeLayer();
+      } else if (tile2.properties.layer_rollback) {
+        this.mapManager.undoLayer();
+      }
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+      return;
+    }
+
     if(tile2.properties.is_gem == 1) {
-      this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
       this.mapManager.killGem();
       return;
     }
 
-    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
-      //maybe make an animation
-      this.game.reset();
+    if(tile2.properties.trigger) {
+      this.mapManager.removeCollisionsAndAddElements(tile2.properties.layer_index);
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+      return;
     }
   }
 
@@ -166,8 +195,8 @@ class MainView extends Phaser.State {
 
   moveDown() {
     this.marker.y += CursorSize;
-    if(this.marker.y > Height - CursorSize) {
-      this.marker.y = Height - CursorSize;
+    if(this.marker.y > Height) {
+      this.marker.y -= CursorSize;
     }
   }
 
@@ -180,8 +209,8 @@ class MainView extends Phaser.State {
 
   moveRight() {
     this.marker.x += CursorSize;
-    if(this.marker.x > Width - CursorSize) {
-      this.marker.x = Width - CursorSize;
+    if(this.marker.x > WidthLevel) {
+      this.marker.x -= CursorSize;
     }
   }
 
