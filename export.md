@@ -14,8 +14,8 @@
 ### Level MaximeTrigger2
 `{"playerPosition":{"x":24,"y":438},"lastLayer":1,"text":"Knowledge is power"}`
 
-###Level MaximeTrigger1
+### Level MaximeTrigger1
 `{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Stay focused."}`
 
-###Level Bridge
+### Level Bridge
 `{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Sometimes there's more than meet the eye"}`
