@@ -19,3 +19,7 @@
 
 ### Level Bridge
 `{"playerPosition":{"x":64,"y":214},"lastLayer":1,"text":"Sometimes there's more than meet the eye"}`
+
+
+### Level Patchwork
+`{"playerPosition":{"x":64,"y":60},"lastLayer":1,"text":"OMG! The world all messed up, it might need a fix"}`
