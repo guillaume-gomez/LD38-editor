@@ -26,19 +26,51 @@
   <tile id="352">
    <properties>
     <property name="is_gem" value="1"/>
-    <property name="layer_index" value="1"/>
+    <property name="layer_index" value="2"/>
    </properties>
   </tile>
   <tile id="353">
    <properties>
     <property name="is_gem" value="1"/>
-    <property name="layer_index" value="2"/>
+    <property name="layer_index" value="1"/>
    </properties>
   </tile>
   <tile id="367">
    <properties>
     <property name="layer_index" value="3"/>
     <property name="portal" value="1"/>
+   </properties>
+  </tile>
+  <tile id="369">
+   <properties>
+    <property name="layer_destroy" type="bool" value="true"/>
+    <property name="layer_gem" value="1"/>
+    <property name="layer_index" value="3"/>
+    <property name="layer_rollback" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="370">
+   <properties>
+    <property name="layer_destroy" type="bool" value="true"/>
+    <property name="layer_gem" value="1"/>
+    <property name="layer_index" value="2"/>
+    <property name="layer_rollback" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="371">
+   <properties>
+    <property name="layer_destroy" type="bool" value="false"/>
+    <property name="layer_gem" value="1"/>
+    <property name="layer_index" value="2"/>
+    <property name="layer_rollback" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="372">
+   <properties>
+    <property name="layer_destroy" type="bool" value="false"/>
+    <property name="layer_gem" type="int" value="1"/>
+    <property name="layer_index" type="int" value="1"/>
+    <property name="layer_rollback" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="384">
