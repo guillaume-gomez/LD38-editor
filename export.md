@@ -23,3 +23,6 @@
 
 ### Level Patchwork
 `{"playerPosition":{"x":64,"y":60},"lastLayer":1,"text":"OMG! The world all messed up, it might need a fix"}`
+
+### FlashJump
+`{"playerPosition":{"x":64,"y":118},"lastLayer":1,"text":"Don't be afraid to switch universes"}`
