@@ -13,17 +13,20 @@ class Character extends Phaser.Sprite {
     this.upKey = game.input.keyboard.addKey(this.game.controls.getKey("jump"));
     this.leftKey = game.input.keyboard.addKey(this.game.controls.getKey("left"));
     this.rightKey = game.input.keyboard.addKey(this.game.controls.getKey("right"));
+    this.button = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
 
     this.locked = true;
 
     this.jumpCount = 0;
-    this.upKey.onDown.add(this.checkDoubleJump, this);
 
     this.body.gravity.y = 0;
     const fn = () => {
       this.body.gravity.y = 750;
       this.locked = false;
       this.upKey.onDown.add(this.checkDoubleJump, this);
+      if(this.game.controls.hasGamepad()) {
+        this.button.onDown.add(this.checkDoubleJump, this);
+      }
     };
     setTimeout(fn, 500);
     const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
@@ -53,18 +56,32 @@ class Character extends Phaser.Sprite {
       return;
     }
 
-    if (this.leftKey.isDown) {
+    if (this.leftKey.isDown || (this.game.controls.hasGamepad() && this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.5 )) {
         this.body.velocity.x = -200;
         this.animations.play("left", TimeLapse);
         this.direction = -1;
     }
-    else if (this.rightKey.isDown) {
+    else if (this.rightKey.isDown || (this.game.controls.hasGamepad() && this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.5 )) {
         this.body.velocity.x = 200;
         this.animations.play("right", TimeLapse);
         this.direction = 1;
     } else {
       this.body.velocity.x = 0;
     }
+
+    // // Make the player jump if he is touching the ground
+    // if (this.upKey.isDown  && this.jumpCount < 2) {
+    //   console.log('jumpCount')
+    //   this.body.velocity.y = -225;
+    //   if(this.body.velocity.x === 0) {
+    //     if(this.direction === -1) {
+    //       this.animations.play("jumpLeft", TimeLapse);
+    //     } else {
+    //       this.animations.play("jumpRight", TimeLapse);
+    //     }
+    //   }
+    //   this.jumpCount++;
+    // }
 
     if(this.body.velocity.x == 0 && this.body.velocity.y == 0){
       if (this.direction == -1) {
@@ -82,6 +99,8 @@ class Character extends Phaser.Sprite {
 
   checkDoubleJump() {
     if(this.jumpCount < 2) {
+      //due to the gamepad
+      if(!this.body) return
       this.body.velocity.y = -225;
        if(this.body.velocity.x === 0) {
          if(this.direction === -1) {
