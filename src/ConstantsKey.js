@@ -11,11 +11,11 @@ text: Text to explain the level
 playerPostion: original position of the player with the format {x: valueX, y: valueY}
 */
 export const Level1 = {
-  path: "LVL_test.json",
+  path: "flashJump.json",
   key: "Test",
   lastLayer: 3,
-  text: "",
-  playerPosition: {x: 64, y: 352}
+  text: "Don't be afraid to switch universes",
+  playerPosition: {x: 64, y: 118}
 };
 
 export const Levels = {
