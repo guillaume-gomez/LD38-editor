@@ -82,17 +82,45 @@
              "352":
                 {
                  "is_gem":"1",
-                 "layer_index":"1"
+                 "layer_index":"2"
                 },
              "353":
                 {
                  "is_gem":"1",
-                 "layer_index":"2"
+                 "layer_index":"1"
                 },
              "367":
                 {
                  "layer_index":"3",
                  "portal":"1"
+                },
+             "369":
+                {
+                 "layer_destroy":true,
+                 "layer_gem":"1",
+                 "layer_index":"3",
+                 "layer_rollback":false
+                },
+             "370":
+                {
+                 "layer_destroy":true,
+                 "layer_gem":"1",
+                 "layer_index":"2",
+                 "layer_rollback":false
+                },
+             "371":
+                {
+                 "layer_destroy":false,
+                 "layer_gem":"1",
+                 "layer_index":"2",
+                 "layer_rollback":true
+                },
+             "372":
+                {
+                 "layer_destroy":false,
+                 "layer_gem":1,
+                 "layer_index":1,
+                 "layer_rollback":true
                 },
              "384":
                 {
@@ -168,6 +196,34 @@
                  "layer_index":"string",
                  "portal":"string"
                 },
+             "369":
+                {
+                 "layer_destroy":"bool",
+                 "layer_gem":"string",
+                 "layer_index":"string",
+                 "layer_rollback":"bool"
+                },
+             "370":
+                {
+                 "layer_destroy":"bool",
+                 "layer_gem":"string",
+                 "layer_index":"string",
+                 "layer_rollback":"bool"
+                },
+             "371":
+                {
+                 "layer_destroy":"bool",
+                 "layer_gem":"string",
+                 "layer_index":"string",
+                 "layer_rollback":"bool"
+                },
+             "372":
+                {
+                 "layer_destroy":"bool",
+                 "layer_gem":"int",
+                 "layer_index":"int",
+                 "layer_rollback":"bool"
+                },
              "384":
                 {
                  "is_gem":"string",
@@ -211,6 +267,7 @@
          "tilewidth":32
         }],
  "tilewidth":32,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":34
 }
