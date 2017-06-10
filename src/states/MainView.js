@@ -219,7 +219,7 @@ class MainView extends Phaser.State {
     this.game.load.image(Tileset.key, `res/${Tileset.path}`);
     this.game.load.spritesheet('go_to_command_button', "res/help_button.png", 64, 64);
     if(this.hasLevel) {
-      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/levels/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
     }
   }
 
