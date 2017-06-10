@@ -13,6 +13,7 @@ class MainView extends Phaser.State {
   }
 
   init(indexLevel) {
+    console.log(indexLevel)
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
     if(!this.game.controls) {
@@ -24,6 +25,7 @@ class MainView extends Phaser.State {
   }
 
   create() {
+
     if(!this.hasLevel) {
       this.game.goToMenu();
     } else {
@@ -45,7 +47,7 @@ class MainView extends Phaser.State {
       this.collisionLayer.resizeWorld();
       const heroX = this.game.paramsLevel.playerPosition.x;
       const heroY = this.game.paramsLevel.playerPosition.y;
-      this.hero = new Character(this.game, heroX, heroY, HeroSprite.key, 0);
+      this.hero = new Character(this.game, Levels[`Level${this.indexLevel}`].playerPosition.x , Levels[`Level${this.indexLevel}`].playerPosition.y, HeroSprite.key, 0);
       this.game.add.existing(this.hero);
       this.game.camera.follow(this.hero);
 
@@ -53,10 +55,10 @@ class MainView extends Phaser.State {
       this.createTileSelector();
       this.game.input.addMoveCallback(this.updateMarker, this);
 
-      this.mapManager = new MapManager(this.map, this.game.paramsLevel.lastLayer);
+      this.mapManager = new MapManager(this.map,  Levels[`Level${this.indexLevel}`].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.text = new InformationString(this.game, Width/2, this.game.paramsLevel.text );
+      this.text = new InformationString(this.game, Width/2,  Levels[`Level${this.indexLevel}`].text );
       this.game.add.existing(this.text);
       this.text.blink();
 
@@ -125,7 +127,7 @@ class MainView extends Phaser.State {
   additionalCheckCollide(tile1, tile2) {
     if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
       //maybe make an animation
-      this.game.reset();
+      this.game.nextLevel();
     }
   }
 

@@ -7,6 +7,7 @@ const DefaultTiles = [{layer_index: 3, tile: 1152}, {layer_index: 2, tile: 1184}
 class MapManager {
 
   constructor(map, lastLayerAvailable) {
+    console.log(lastLayerAvailable)
     this.removedBlock = [];
     this.cacheCollisionLayer = [];
     this.lastLayerAvailable = lastLayerAvailable;
