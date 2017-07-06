@@ -66,3 +66,11 @@ export const Level Patchwork =
   "text": "OMG! The world all messed up, it might need a fix",
   "playerPosition":{"x":64,"y":60}
 };
+
+export const TheEndIsNigh = {
+  "path": "theEndIsNigh.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "It feels like a treasure is ahead of us !",
+  "playerPosition": {"x": 36, "y": 246}
+};

@@ -26,3 +26,6 @@
 
 ### FlashJump
 `{"playerPosition":{"x":64,"y":118},"lastLayer":1,"text":"Don't be afraid to switch universes"}`
+
+### TheEndIsNigh
+{ "playerPosition": {"x": 36, "y": 246}, "lastLayer": 1, "text": "It feels like a treasure is ahead of us !"}
