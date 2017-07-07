@@ -1,56 +1,57 @@
 ## Data exported by level
-export const Level9 = {
-  "path": "Level9 ",
+
+export const Level1 = {
+  "path": "LVL_9.json",
   "key": "Test",
   "lastLayer": 1,
   "text": "",
   "playerPosition":{"x":500,"y":80}
 };
 
-export const Level10 =
-  { "path": "Level10",
+export const Level2 =
+  { "path": "LVL_10.json",
     "key": "Test",
     "lastLayer": 1,
     "text": "I see a new block here!",
     "playerPosition":{"x":64,"y":352}
 };
 
-export const level_of_death = {
-  "path": "Level leap of death",
+export const Level3 = {
+  "path": "LVL_leap_of_death.json",
   "key": "Test",
   "lastLayer": 2,
   "text": "",
   "playerPosition":{"x":64,"y":280}
 };
 
-### Level hidden gems
-export const level_hidden_gems = {
-  "path": "level_hidden_gems.json",
+export const Level4 = {
+  "path": "LVL_three_level_of_gems.json",
   "key": "Test",
   "lastLayer": 1,
-  "text": "Look ! Some gems seem hidden"
-}
+  "text": "Look ! Some gems seem hidden",
+  "playerPosition":{"x":64,"y":140}
+};
 
-export const Level MaximeTrigger2 =
-{ "path" : "Level MaximeTrigger2",
+export const Level5 =
+{ "path" : "MaxTrigger2.json",
   "key": "Test",
   "lastLayer": 1,
   "text": "Knowledge is power",
   "playerPosition":{"x":24,"y":438}
 };
 
-export const Level MaximeTrigger1 =
+export const Level5 =
 {
-  "path" : "Level MaximeTrigger1",
+  "path" : "MaxTrigger1.json",
   "key": "Test",
   "lastLayer": 1,
   "text": "Stay focused.",
   "playerPosition": {"x":64,"y":214}
 };
 
-export const Level Bridge =
+export const Level6 =
 {
-  "path" : "Level Bridge",
+  "path" : "bridge.json",
   "key": "Test",
   "lastLayer": 1,
   "text": "Sometimes there's more than meet the eye",
@@ -58,9 +59,9 @@ export const Level Bridge =
 };
 
 
-export const Level Patchwork =
+export const Level7 =
 {
-  "path" : "Level Patchwork",
+  "path" : "patchwork.json",
   "key": "Test",
   "lastLayer": 1,
   "text": "OMG! The world all messed up, it might need a fix",
